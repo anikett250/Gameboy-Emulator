@@ -42,6 +42,33 @@ public:
     uint8_t read(uint16_t addr);
     void write(uint16_t addr, uint8_t val);
     int step();
+
+    // --- 5. Register Pair Getters & Setters ---
+    uint16_t getAF() { return (reg.a << 8) | reg.f; }
+    uint16_t getBC() { return (reg.b << 8) | reg.c; }
+    uint16_t getDE() { return (reg.d << 8) | reg.e; }
+    uint16_t getHL() { return (reg.h << 8) | reg.l; }
+
+    void setAF(uint16_t val)
+    {
+        reg.a = val >> 8;
+        reg.f = val & 0xF0;
+    }
+    void setBC(uint16_t val)
+    {
+        reg.b = val >> 8;
+        reg.c = val & 0xFF;
+    }
+    void setDE(uint16_t val)
+    {
+        reg.d = val >> 8;
+        reg.e = val & 0xFF;
+    }
+    void setHL(uint16_t val)
+    {
+        reg.h = val >> 8;
+        reg.l = val & 0xFF;
+    }
 };
 
 uint8_t Gameboy::read(uint16_t addr)
@@ -114,7 +141,8 @@ bool Gameboy::loadROM(const std::string &filepath)
 int main()
 {
     Gameboy gameboy;
-    if (!gameboy.loadROM("Pokemon - Red Version.gb")){
+    if (!gameboy.loadROM("Pokemon - Red Version.gb"))
+    {
         std::cerr << "Failed to Load ROM\n";
         return 1;
     }
